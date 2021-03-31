@@ -6,7 +6,7 @@ module.exports = function(app, swig) {
 
         });
         res.send(respuesta);
-    })
+    });
 
     app.get("/canciones", function(req, res) {
 
