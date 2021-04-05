@@ -4,8 +4,8 @@ let app = express();
 let bodyParser = require('body-parser');
 let swig = require('swig');
 let mongo = require('mongodb');
-
-
+let fileUpload = require('express-fileupload');
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
