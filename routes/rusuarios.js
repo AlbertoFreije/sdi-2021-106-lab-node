@@ -46,6 +46,8 @@ module.exports = function(app, swig, gestorBD) {
         });
     });
 
+
+
     app.get('/desconectarse', function (req, res) {
         req.session.usuario = null;
         res.send("Usuario desconectado");
