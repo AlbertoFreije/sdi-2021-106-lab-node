@@ -44,15 +44,29 @@ module.exports = function(app, swig, gestorBD) {
     app.get('/cancion/:id', function (req, res) {
 
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id)};
+
         gestorBD.obtenerCanciones(criterio,function(canciones){
             if ( canciones == null ){
                 res.send("Error al recuperar la canción.");
             } else {
-                let respuesta = swig.renderFile('views/bcancion.html',
-                    {
-                        cancion : canciones[0]
-                    });
-                res.send(respuesta);
+
+                //let criterioComentario = { "_idCancion" : gestorBD.mongo.ObjectID(req.params.id)};
+
+                gestorBD.obtenerComentarios(criterio, function (comentarios){
+
+                    if(comentarios == null){
+                        res.send("Error al obtener los comentarios.");
+                    }else{
+
+                        let respuesta = swig.renderFile('views/bcancion.html',
+                            {
+                                cancion : canciones[0],
+                                comentarios : comentarios
+                            });
+                        res.send(respuesta);
+
+                    }
+                })
             }
         });
     });
@@ -63,20 +77,6 @@ module.exports = function(app, swig, gestorBD) {
         res.send(respuesta);
     });
 
-    app.get('/cancion/modificar/:id', function (req, res) {
-        let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id) };
-        gestorBD.obtenerCanciones(criterio,function(canciones){
-            if ( canciones == null ){
-                res.send(respuesta);
-            } else {
-                let respuesta = swig.renderFile('views/bcancionModificar.html',
-                    {
-                        cancion : canciones[0]
-                    });
-                res.send(respuesta);
-            }
-        });
-    })
 
     app.post('/cancion/modificar/:id', function (req, res) {
         let id = req.params.id;
