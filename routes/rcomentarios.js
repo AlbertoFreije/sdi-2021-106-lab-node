@@ -12,14 +12,23 @@ module.exports = function(app, swig, gestorBD) {
 
             gestorBD.insertarComentario(comentario, function (id) {
                 if (id == null) {
-                    res.send("Error insertando el comentario");
+
+                    let respuesta = swig.renderFile('views/error.html',
+                        {
+                            mensaje: "Error insertando el comentario"
+                        });
+                    res.send(respuesta);
                 } else {
                     res.send("añadido correctamente");
                 }
             });
 
         } else {
-            res.send("Error: Usuario no ha iniciado sesion");
+            let respuesta = swig.renderFile('views/error.html',
+                {
+                    mensaje: "Error: Usuario no ha iniciado sesion"
+                });
+            res.send(respuesta);
         }
 
     })

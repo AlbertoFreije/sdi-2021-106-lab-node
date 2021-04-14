@@ -60,7 +60,13 @@ module.exports = function(app, swig, gestorBD) {
                 });
             }
             else{
-                res.send("Error al comprar la cancion , puede que ya la tengas comprada.");
+
+                //res.send("Error al comprar la cancion , puede que ya la tengas comprada.");
+                let respuesta = swig.renderFile('views/error.html',
+                    {
+                        mensaje: "Error al comprar la cancion , puede que ya la tengas comprada."
+                    });
+                res.send(respuesta);
             }
         })
     });

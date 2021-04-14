@@ -122,7 +122,11 @@ app.use(function (err, req, res, next) {
     console.log("Error producido: " + err);
     if (!res.headersSent) {
         res.status(400);
-        res.send("Recurso no disponible");
+        let respuesta = swig.renderFile('views/error.html',
+            {
+                mensaje: "Error al comprar la cancion , puede que ya la tengas comprada."
+            });
+        res.send(respuesta);
     }
 });
 
