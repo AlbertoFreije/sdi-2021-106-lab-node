@@ -35,9 +35,19 @@ module.exports = function(app, swig, gestorBD) {
         res.send(respuesta);
     });
 
-    app.get('/suma', function(req, res, next) {
+    app.get('/suma', function(req, res) {
         let respuesta = parseInt(req.query.num1) + parseInt(req.query.num2);
         res.send(String(respuesta));
+    });
+
+    app.get('/errors', function(req, res) {
+
+        let respuesta = swig.renderFile('views/error.html',
+        {
+           mensaje: req.session.errores.mensaje, tipoMensaje: req.session.errores.tipoMensaje
+
+        });
+        res.send(respuesta);
     });
 
     app.get('/cancion/comprar/:id', function (req, res,next) {
@@ -67,9 +77,9 @@ module.exports = function(app, swig, gestorBD) {
                         //mensaje: "Error al comprar la cancion , puede que ya la tengas comprada."
                     //});
                 //res.send(respuesta);
-                //req.session.errores = {mensaje: 'Error al comprar', tipoMensaje:'alert-danger'};
-                //res.redirect("/errors");
-                next(new Error('Error al comprar la cancion , puede que ya la tengas comprada.'));
+                req.session.errores = {mensaje: 'Error al comprar la cancion , puede que ya la tengas comprada.', tipoMensaje:'alert-danger'};
+                res.redirect("/errors");
+                //next(new Error('Error al comprar la cancion , puede que ya la tengas comprada.'));
             }
         })
     });
