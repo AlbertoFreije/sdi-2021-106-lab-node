@@ -7,6 +7,7 @@ let mongo = require('mongodb');
 let fs = require('fs');
 let https = require('https');
 
+
 var expressSession = require('express-session');
 app.use(expressSession({
     secret: 'abcdefg',
@@ -124,7 +125,8 @@ app.use(function (err, req, res, next) {
         res.send("Recurso no disponible");
     }
 });
-// lanzar el servidor
+
+
 https.createServer({
     key: fs.readFileSync('certificates/alice.key'),
     cert: fs.readFileSync('certificates/alice.crt')
