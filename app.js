@@ -120,11 +120,13 @@ app.get('/', function (req, res) {
 
 app.use(function (err, req, res, next) {
     console.log("Error producido: " + err);
+
     if (!res.headersSent) {
         res.status(400);
         let respuesta = swig.renderFile('views/error.html',
             {
-                mensaje: "Error al comprar la cancion , puede que ya la tengas comprada."
+                mensaje: "Error al comprar la cancion , puede que ya la tengas comprada.",
+                tipoMensaje:"Alert-danger"
             });
         res.send(respuesta);
     }
