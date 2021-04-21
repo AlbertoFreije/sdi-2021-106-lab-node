@@ -7,7 +7,7 @@
         <thead>
         <tr>
             <th><a onclick="ordenarPorNombre()">Nombre</a></th>
-            <th>Genero</th>
+            <th><a onclick="ordenarPorGenero()">Genero</a></th>
             <th><a onclick="ordenarPorPrecio()">Precio</a></th>
             <th class="col-md-1"></th>
         </tr>
@@ -70,15 +70,44 @@
         precioDsc = !precioDsc; // invertir
     }
 
-
+    var nombreDsc=true;
     function ordenarPorNombre(){
-        canciones.sort(function(a, b) {
-            if(a.nombre > b.nombre ) return 1;
-            if(a.nombre < b.nombre ) return -1;
-            return 0;
-        });
+        if(nombreDsc){
+            canciones.sort(function(a, b) {
+                if(a.nombre > b.nombre ) return 1;
+                if(a.nombre < b.nombre ) return -1;
+                return 0;
+            });
+        }
+        else{
+            canciones.sort(function(a, b) {
+                if(a.nombre > b.nombre ) return -1;
+                if(a.nombre < b.nombre ) return 1;
+                return 0;
+            });
+        }
         actualizarTabla(canciones);
+        nombreDsc = !nombreDsc; //invertir
+    }
 
+    var generoDsc=true;
+    function ordenarPorGenero(){
+        if(generoDsc){
+            canciones.sort(function(a, b) {
+                if(a.genero > b.genero ) return 1;
+                if(a.genero < b.genero ) return -1;
+                return 0;
+            });
+        }
+        else{
+            canciones.sort(function(a, b) {
+                if(a.genero > b.genero ) return -1;
+                if(a.genero < b.genero ) return 1;
+                return 0;
+            });
+        }
+        actualizarTabla(canciones);
+        generoDsc = !generoDsc; //invertir
     }
 
     function actualizarTabla(cancionesMostrar){$( "#tablaCuerpo" ).empty(); // Vaciar la tabla
@@ -116,7 +145,20 @@
                 $( "#"+_id ).remove(); // eliminar el <tr> de la canción
             },
             error : function (error){
-                $( "#contenedor-principal" ).load("widget-login.html");
+                console.log(error); // <-- Prueba
+                $("#div-errores").remove();
+                let errores = ( typeof error.responseJSON.errores == "undefined") ? null : error.responseJSON.errores;
+                if( errores != null && errores.length>0){
+                    $("#widget-canciones")
+                        .prepend("<div id = 'div-errores' class='alert alert-danger'> <ul id = 'ul-errores'></ul></div>");
+                    for (i = 0; i < errores.length; i++) {
+                        $("#ul-errores").append("<li >"+ errores[i] + "</li>");
+                    }
+                }
+                else {
+                    $("#widget-canciones")
+                        .prepend("<div id = 'div-errores' class='alert alert-danger'>Se ha producido un error no controlado</div>");
+                }
             }
         });
     }
