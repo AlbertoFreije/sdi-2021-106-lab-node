@@ -59,12 +59,9 @@ module.exports = function(app, gestorBD) {
                                 res.status(200);
                                 res.send(JSON.stringify(canciones));
                             }
-
-
                         })
                     }
                 });
-
     });
 
     app.post("/api/cancion", function(req, res) {
@@ -206,21 +203,21 @@ module.exports = function(app, gestorBD) {
 
         let errors = new Array();
 
-        if(cancion.nombre !== null || typeof cancion.nombre !== 'undefined' || cancion.nombre !== "" ){
-            if(cancion.nombre.length >20 ){
+        if(cancion.nombre === null || typeof cancion.nombre === 'undefined' || cancion.nombre === "" ){
+            errors.push("El nombre de la cancion no puede estar vacio");
+            if(cancion.nombre > 20){
                 errors.push("El nombre de la cancion no puede tener mas de 20 caracteres");
             }
         }
-        if(cancion.genero !== null || typeof cancion.genero !== 'undefined' || cancion.genero !== "" ){
-           if(cancion.genero.length>20){
-               errors.push("El genero de la cancion no puede tener mas de 20 caracteres");
-           }
-        }
-        if(cancion.precio !== null || typeof cancion.precio !== 'undefined' || cancion.precio !=="" ){
-            if(cancion.precio < 0){
-                errors.push("El precio de la cancion no ser menor de 0");
+        if(cancion.genero === null || typeof cancion.genero === 'undefined' || cancion.genero === "" ){
+            errors.push("El genero de la cancion no puede estar vacio");
+            if(cancion.genero > 20){
+                errors.push("El nombre de la cancion no puede tener mas de 20 caracteres");
             }
 
+        }
+        if(cancion.precio === null || typeof cancion.precio === 'undefined' || cancion.precio < 0 || cancion.precio ==="" ){
+            errors.push("El precio de la cancion no puede estar vacio o no puede ser menor de 0");
         }
         if(errors.length<=0){
             functionCallback(null);
